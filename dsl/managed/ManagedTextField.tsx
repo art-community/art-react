@@ -61,6 +61,8 @@ class Configuration extends Configurable<Properties> {
 }
 
 export class ManagedTextField extends Widget<ManagedTextField, Properties, Configuration> {
+    #mapper = text => text;
+
     #errorLabel = label({text: this.configuration.error.value?.text || ""})
     .useText(text => this.configuration.error.consume(value => value?.text && text.set(value.text)));
 
@@ -121,8 +123,14 @@ export class ManagedTextField extends Widget<ManagedTextField, Properties, Confi
 
     text = () => this.configuration.text.value;
 
+    value = () => this.#mapper(this.configuration.text.value);
 
     required = () => Boolean(this.properties.required);
+
+    valueMapper = (mapper: (value: string) => any) => {
+        this.#mapper = mapper;
+        return this;
+    }
 
     draw = () => {
         const tooltipStyle = useTooltipStyle();

@@ -1,0 +1,4 @@
+* text=auto
+*.jar filter=lfs diff=lfs merge=lfs -text
+agent/tools/kubectl-3.11.0 filter=lfs diff=lfs merge=lfs -text
+agent/tools/oc-3.11.0 filter=lfs diff=lfs merge=lfs -text

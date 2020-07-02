@@ -2,16 +2,14 @@ import React, {Dispatch} from "react";
 import {Configurable} from "../../pattern/Configurable";
 import {ControlledEditor, ControlledEditorProps} from "@monaco-editor/react";
 import {calculateCodeSyntax} from "../../../constants/CodeSynstaxCalculator";
-import {panel} from "./ManagedPanel";
-import {bigLoader, smallLoader} from "../simple/SimpleLoader";
+import {smallLoader} from "../simple/SimpleLoader";
 import {Widget} from "../../widgets/Widget";
 import {CodeEditorTheme, DEFAULT_CODE_EDITOR_HEIGHT, fromEditorEvent} from "../../constants/Constants";
 import {asynchronous} from "../../extensions/extensions";
 import {styled} from "../../widgets/Styled";
-import {gridItem, ManagedGrid, verticalGrid} from "./ManagedGrid";
+import {verticalGrid} from "./ManagedGrid";
 import {label} from "./ManagedLabel";
-import {proxy} from "../../widgets/Proxy";
-import {lazy} from "../../pattern/Lazy";
+import {panel} from "./ManagedPanel";
 
 type Receiver = (setter: Dispatch<string>) => any;
 
@@ -46,13 +44,6 @@ export class ManagedCodeEditor extends Widget<ManagedCodeEditor, CodeEditorPrope
     });
 
     #loaded = !this.properties.receiver;
-
-    #labeled = lazy<ManagedGrid>(() => verticalGrid({spacing: 1})
-    .pushWidget(label({
-        text: this.properties.label!,
-        color: "secondary",
-        variant: "h6"
-    })));
 
     setThemeName = (name: CodeEditorTheme) => {
         this.configuration.themeName.value = name;
@@ -137,7 +128,7 @@ export class ManagedCodeEditor extends Widget<ManagedCodeEditor, CodeEditorPrope
             }))
         }
 
-        const widget = !this.#loaded ? this.#loader.render()
+        return !this.#loaded ? this.#loader.render()
             : <ControlledEditor
                 {...
                     {
@@ -161,19 +152,25 @@ export class ManagedCodeEditor extends Widget<ManagedCodeEditor, CodeEditorPrope
                     }
                 }
             />;
-
-        if (this.properties?.panel) {
-            return panel(proxy(widget, this.key()), {label: this.properties?.label || "Редактор"}).render()
-        }
-
-        if (this.properties?.label) {
-            return this.#labeled()
-            .replaceItem(gridItem(proxy(widget, this.key()), this.key()))
-            .render()
-        }
-
-        return widget
     };
 }
 
-export const codeEditor = (properties?: CodeEditorProperties) => new ManagedCodeEditor(properties, Configuration)
+
+const labeled = (editor: ManagedCodeEditor, text: string) => verticalGrid({spacing: 1})
+.pushWidget(label({
+    text: text,
+    color: "secondary",
+    variant: "h6"
+}))
+.pushWidget(editor);
+
+export const codeEditor = (properties?: CodeEditorProperties) => {
+    const editor = new ManagedCodeEditor(properties, Configuration);
+    if (properties?.panel) {
+        return panel(editor, {label: properties?.label || "Редактор"})
+    }
+    if (properties?.label) {
+        return labeled(editor, properties.label)
+    }
+    return editor;
+}

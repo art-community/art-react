@@ -28,9 +28,12 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
 
     #addons: Widget<any>[] = []
 
+    #usedKey?: Key;
+
     readonly id = random();
 
-    readonly key = () => this.id as Key;
+
+    readonly key = () => this.#usedKey == undefined ? this.id as Key : this.#usedKey;
 
     protected synchronizer = synchronize();
 
@@ -143,6 +146,11 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
     add = <T extends Widget<any>>(widget: T): T => {
         this.#addons.push(widget)
         return widget;
+    }
+
+    useKey = (key: Key) => {
+        this.#usedKey = key;
+        return this;
     }
 
     render = (properties?: object) => {

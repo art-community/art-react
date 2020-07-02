@@ -3,7 +3,7 @@ import {Configurable} from "../../pattern/Configurable";
 import {ControlledEditor, ControlledEditorProps} from "@monaco-editor/react";
 import {calculateCodeSyntax} from "../../../constants/CodeSynstaxCalculator";
 import {panel} from "./ManagedPanel";
-import {bigLoader} from "../simple/SimpleLoader";
+import {bigLoader, smallLoader} from "../simple/SimpleLoader";
 import {Widget} from "../../widgets/Widget";
 import {CodeEditorTheme, DEFAULT_CODE_EDITOR_HEIGHT, fromEditorEvent} from "../../constants/Constants";
 import {asynchronous} from "../../extensions/extensions";
@@ -40,7 +40,7 @@ class Configuration extends Configurable<CodeEditorProperties> {
 }
 
 export class ManagedCodeEditor extends Widget<ManagedCodeEditor, CodeEditorProperties, Configuration> {
-    #loader = styled(bigLoader(), {
+    #loader = styled(smallLoader(), {
         width: this.properties.width,
         height: this.properties.height || DEFAULT_CODE_EDITOR_HEIGHT,
     });

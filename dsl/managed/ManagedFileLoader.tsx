@@ -136,6 +136,12 @@ class ManagedFileLoader extends Widget<ManagedFileLoader, Properties, Configurat
             this.notify();
             return;
         }
+        if (file.fileSize == 0) {
+            this.#notifications().warning(`Пустые файлы не допускаются: ${file.filename}`);
+            this.configuration.loadedFiles.value = this.configuration.loadedFiles.value!.filter(currentFile => currentFile != file);
+            this.notify();
+            return;
+        }
         const index = this.configuration.loadedFiles.value!.findIndex(current => current.filename == file.filename);
         if (index == -1) {
             this.configuration.loadedFiles.value = [...this.configuration.loadedFiles.value, file];

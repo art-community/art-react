@@ -85,9 +85,9 @@ Array.prototype.duplicates = function <K, T>(this: Array<T>, functor?: (element:
     return this.filter(element => filtered.includes((functor || (element => element as unknown as K))(element)))
 };
 
-Array.prototype.unique = function <K, T>(this: Array<T>, functor: (element: T | K) => K): T[] {
+Array.prototype.unique = function <K, T>(this: Array<T>, functor?: (element: T | K) => K): T[] {
     const map = new Map<K, T>();
-    this.forEach(element => map.set(functor(element), element));
+    this.forEach(element => map.set(functor ? functor(element) : element as unknown as K, element));
     return map.valuesToArray(element => element);
 };
 

@@ -10,6 +10,7 @@ import {styled} from "../../widgets/Styled";
 import {verticalGrid} from "./ManagedGrid";
 import {label} from "./ManagedLabel";
 import {panel} from "./ManagedPanel";
+import {lazy} from "../../pattern/Lazy";
 
 type Receiver = (setter: Dispatch<string>) => any;
 
@@ -155,7 +156,6 @@ export class ManagedCodeEditor extends Widget<ManagedCodeEditor, CodeEditorPrope
     };
 }
 
-
 const labeled = (editor: ManagedCodeEditor, text: string) => verticalGrid({spacing: 1})
 .pushWidget(label({
     text: text,
@@ -164,13 +164,20 @@ const labeled = (editor: ManagedCodeEditor, text: string) => verticalGrid({spaci
 }))
 .pushWidget(editor);
 
-export const codeEditor = (properties?: CodeEditorProperties) => {
-    const editor = new ManagedCodeEditor(properties, Configuration);
-    if (properties?.panel) {
-        return panel(editor, {label: properties?.label || "Редактор"})
-    }
-    if (properties?.label) {
-        return labeled(editor, properties.label)
-    }
-    return editor;
+class ManagedCodeEditorWrapper extends ManagedCodeEditor {
+    #widget = lazy(() => {
+        const editor = new ManagedCodeEditor(this.properties, Configuration);
+
+        if (this.properties.panel) {
+            return panel(editor, {label: this.properties.label || "Редактор"})
+        }
+        if (this.properties.label) {
+            return labeled(editor, this.properties.label)
+        }
+        return editor
+    })
+
+    draw = () => this.#widget().render();
 }
+
+export const codeEditor = (properties?: CodeEditorProperties) => new ManagedCodeEditorWrapper(properties)

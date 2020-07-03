@@ -1,5 +1,5 @@
 import React, {Dispatch, DispatchWithoutAction} from "react";
-import {Grid, GridDirection, IconButton, Paper, Typography, useTheme} from "@material-ui/core";
+import {Grid, GridDirection, IconButton, Paper, Tooltip, Typography, useTheme} from "@material-ui/core";
 import AddOutlined from "@material-ui/icons/AddOutlined";
 import {Widget} from "../../widgets/Widget";
 import {Configurable} from "../../pattern/Configurable";
@@ -15,6 +15,7 @@ import {Breakpoint} from "@material-ui/core/styles/createBreakpoints";
 import {GridSize} from "@material-ui/core/Grid/Grid";
 import {defer} from "../../pattern/Deferred";
 import {event} from "../../pattern/Event";
+import {DEFAULT_TOOLTIP_TRANSITION_TIMEOUT} from "../../constants/Constants";
 
 type EditingDisabledProperties = {
     exclusion: number
@@ -39,6 +40,8 @@ type Properties<T extends Widget<any>> = {
     factory: ComponentFactoryType<T>
     ids?: number[]
     direction?: GridDirection
+    addButtonTooltip?: string
+    deleteButtonTooltip?: string
 }
 
 type ReducedFactoryType<T extends Widget<any>> = (id: number) => CollectionItemProperties<T>;
@@ -261,20 +264,45 @@ export class ManagedCollection<T extends Widget<any>> extends Widget<ManagedColl
         const additionDisabled = this.configuration.additionDisabled.value;
 
         const deleteIcon = observe(editingDisabled).render(() =>
-            <Grid item>
-                <IconButton disabled={editingDisabled || deletionDisabled} onClick={() => this.configuration.deleteItem(item.id)}>
-                    <DeleteOutlined color={editingDisabled || deletionDisabled ? "disabled" : "primary"}/>
-                </IconButton>
-            </Grid>
+            this.properties.deleteButtonTooltip
+                ? <Grid item>
+                    <Tooltip title={<Typography>{this.properties.addButtonTooltip}</Typography>}
+                             placement={"bottom"}
+                             TransitionProps={{timeout: DEFAULT_TOOLTIP_TRANSITION_TIMEOUT}}>
+                        <span>
+                            <IconButton disabled={editingDisabled || deletionDisabled} onClick={() => this.configuration.deleteItem(item.id)}>
+                                <DeleteOutlined color={editingDisabled || deletionDisabled ? "disabled" : "primary"}/>
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                </Grid>
+                : <Grid item>
+                    <IconButton disabled={editingDisabled || deletionDisabled} onClick={() => this.configuration.deleteItem(item.id)}>
+                        <DeleteOutlined color={editingDisabled || deletionDisabled ? "disabled" : "primary"}/>
+                    </IconButton>
+                </Grid>
         );
 
         const addIcon = defer(item.id, additionDisabled, this.configuration.last?.id).render(() =>
-            <Grid item>
-                <IconButton disabled={additionDisabled}
-                            onClick={() => this.configuration.addNewItem(id => this.properties.factory(id, this))}>
-                    <AddOutlined color={additionDisabled ? "disabled" : "primary"}/>
-                </IconButton>
-            </Grid>
+            this.properties.addButtonTooltip
+                ? <Grid item>
+                    <Tooltip title={<Typography>{this.properties.addButtonTooltip}</Typography>}
+                             placement={"bottom"}
+                             TransitionProps={{timeout: DEFAULT_TOOLTIP_TRANSITION_TIMEOUT}}>
+                        <span>
+                            <IconButton disabled={additionDisabled}
+                                        onClick={() => this.configuration.addNewItem(id => this.properties.factory(id, this))}>
+                                <AddOutlined color={additionDisabled ? "disabled" : "primary"}/>
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                </Grid>
+                : <Grid item>
+                    <IconButton disabled={additionDisabled}
+                                onClick={() => this.configuration.addNewItem(id => this.properties.factory(id, this))}>
+                        <AddOutlined color={additionDisabled ? "disabled" : "primary"}/>
+                    </IconButton>
+                </Grid>
         );
 
         const widget = immutable(<Grid item xs>{item.widget.render()}</Grid>);
@@ -322,12 +350,23 @@ export class ManagedCollection<T extends Widget<any>> extends Widget<ManagedColl
         const style = useStyle();
 
         const addIcon = defer(this.configuration.additionDisabled.value).render(() =>
-            <Grid item>
-                <IconButton disabled={this.configuration.additionDisabled.value}
-                            onClick={() => this.configuration.addNewItem(id => this.properties.factory(id, this))}>
-                    <AddOutlined color={this.configuration.additionDisabled.value ? "disabled" : "primary"}/>
-                </IconButton>
-            </Grid>
+            this.properties.addButtonTooltip
+                ? <Grid item>
+                    <Tooltip title={<Typography>{this.properties.addButtonTooltip}</Typography>}
+                             placement={"bottom"}
+                             TransitionProps={{timeout: DEFAULT_TOOLTIP_TRANSITION_TIMEOUT}}>
+                        <IconButton disabled={this.configuration.additionDisabled.value}
+                                    onClick={() => this.configuration.addNewItem(id => this.properties.factory(id, this))}>
+                            <AddOutlined color={this.configuration.additionDisabled.value ? "disabled" : "primary"}/>
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+                : <Grid item>
+                    <IconButton disabled={this.configuration.additionDisabled.value}
+                                onClick={() => this.configuration.addNewItem(id => this.properties.factory(id, this))}>
+                        <AddOutlined color={this.configuration.additionDisabled.value ? "disabled" : "primary"}/>
+                    </IconButton>
+                </Grid>
         );
 
         const items = isNotEmptyArray(this.configuration.items.value) &&

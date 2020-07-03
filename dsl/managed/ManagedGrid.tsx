@@ -210,6 +210,11 @@ export class ManagedGrid extends Widget<ManagedGrid, GridProps, Configuration> {
         return this;
     }
 
+    filter = (filter: (key: Key) => boolean) => {
+        const grid = new ManagedGrid(this.properties, Configuration);
+        grid.pushWidgets(this.keys().filter(filter).map(key => this.getWidgetByKey(key)))
+        return grid;
+    }
 
     draw = () =>
         <Grid

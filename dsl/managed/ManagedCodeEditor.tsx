@@ -165,19 +165,25 @@ const labeled = (editor: ManagedCodeEditor, text: string) => verticalGrid({spaci
 .pushWidget(editor);
 
 class ManagedCodeEditorWrapper extends ManagedCodeEditor {
-    #widget = lazy(() => {
+    #editor = lazy(() => {
         const editor = new ManagedCodeEditor(this.properties, Configuration);
+        editor.configuration = this.configuration;
+        return editor;
+    })
 
+    #widget = lazy(() => {
         if (this.properties.panel) {
-            return panel(editor, {label: this.properties.label || "Редактор"})
+            return panel(this.#editor(), {label: this.properties.label || "Редактор"})
         }
+
         if (this.properties.label) {
-            return labeled(editor, this.properties.label)
+            return labeled(this.#editor(), this.properties.label)
         }
-        return editor
+
+        return this.#editor()
     })
 
     draw = () => this.#widget().render();
 }
 
-export const codeEditor = (properties?: CodeEditorProperties) => new ManagedCodeEditorWrapper(properties)
+export const codeEditor = (properties?: CodeEditorProperties) => new ManagedCodeEditorWrapper(properties, Configuration)

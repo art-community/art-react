@@ -25,14 +25,15 @@ const useStyle = () => {
 };
 
 export class SimpleCodeViewer extends Widget<SimpleCodeViewer, Properties> {
+    #editor = codeEditor({
+        ...this.properties,
+        width: this.properties?.width || DEFAULT_CODE_VIEWER_WIDTH,
+        height: this.properties?.height || DEFAULT_CODE_VIEWER_HEIGHT,
+        readOnly: true
+    });
+
     draw = () => {
         const style = useStyle();
-        const editor = codeEditor({
-            ...this.properties,
-            width: this.properties?.width || DEFAULT_CODE_VIEWER_WIDTH,
-            height: this.properties?.height || DEFAULT_CODE_VIEWER_HEIGHT,
-            readOnly: true
-        });
         return <Paper elevation={CODE_VIEWER_ELEVATION}>
             <div style={style.editor}>
                 <Grid container direction={"column"} wrap={"nowrap"}>
@@ -44,7 +45,7 @@ export class SimpleCodeViewer extends Widget<SimpleCodeViewer, Properties> {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        {editor.render()}
+                        {this.#editor.render()}
                     </Grid>
                 </Grid>
             </div>

@@ -42,9 +42,9 @@ export class SimpleTooltip extends Widget<SimpleTooltip, Properties> {
                         classes: {tooltip: style.noMaxWidth}
                     }
                 }>
-                <div>
+                <span>
                     {this.#widget.render()}
-                </div>
+                </span>
             </Tooltip>
         </Grid>;
     };

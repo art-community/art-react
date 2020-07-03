@@ -135,7 +135,7 @@ export class ManagedCodeEditor extends Widget<ManagedCodeEditor, CodeEditorPrope
                     {
 
                         ...baseProperties,
-                        options: {...this.properties.options, readOnly: this.configuration.readOnly.value},
+                        options: {...this.properties.options, readOnly: Boolean(this.configuration.readOnly.value)},
                         value: this.configuration.text.value,
                         theme: this.configuration.themeName.value == CodeEditorTheme.DARK ? "dark" : "light",
                         language: this.properties.language

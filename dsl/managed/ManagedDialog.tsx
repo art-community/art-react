@@ -8,7 +8,7 @@ import {button} from "./ManagedButton";
 import {SimpleDraggablePaper} from "../simple/SimpleDraggablePaper";
 import {isNotEmptyArray} from "../../extensions/extensions";
 import {Closable} from "../../pattern/Optional";
-import {DEFAULT_DIALOG_BACKDROP_COLOR, DEFAULT_DIALOG_TRANSITION_TIMEOUT, doNothing} from "../../constants/Constants";
+import {DEFAULT_DIALOG_BACKDROP_COLOR, DEFAULT_DIALOG_TRANSITION_TIMEOUT, doNothing, handleEnter} from "../../constants/Constants";
 
 type Properties = Omit<DialogProps, "open"> & {
     label?: string
@@ -133,21 +133,24 @@ export class ManagedDialog extends Widget<ManagedDialog, Properties, Configurati
 export const dialog = (properties?: Properties) => new ManagedDialog(properties, Configuration);
 
 export const information = (properties: NotificationProperties) => {
-    const action = button({
+    const okButton = button({
         label: properties.buttonLabel,
         fullWidth: true,
         variant: "outlined", color: "primary"
     });
-    const notificationDialog = dialog({label: properties.label})
+    const informationDialog = dialog({
+        label: properties.label,
+        onKeyDown: handleEnter(okButton.click)
+    })
     .widget(label({
         variant: "h6",
         align: "center",
         color: "secondary",
         text: properties.notification
     }))
-    .actions([action]);
-    action.useClick(click => click.handle(notificationDialog.close));
-    return notificationDialog;
+    .action(okButton);
+    okButton.useClick(click => click.handle(informationDialog.close));
+    return informationDialog;
 };
 
 export const warning = (properties: WarningProperties) => {
@@ -162,20 +165,30 @@ export const warning = (properties: WarningProperties) => {
     });
 
     const warningDialog = properties.warning
-        ? dialog({label: properties.label}).widget(label({
+        ? dialog({
+            label: properties.label,
+            onKeyDown: handleEnter(approveButton.click)
+        })
+        .widget(label({
             variant: "h6",
             align: "center",
             color: "secondary",
             text: properties.warning
-        })).actions([approveButton, cancelButton], {
+        }))
+        .actions([approveButton, cancelButton], {
             spacing: 1,
             alignItems: "center",
             justify: "flex-end"
         })
-        : dialog({label: properties.label}).actions([approveButton, cancelButton], {
+        : dialog({
+            label: properties.label,
+            onKeyDown: handleEnter(approveButton.click)
+        })
+        .actions([approveButton, cancelButton], {
             spacing: 1,
             alignItems: "center",
-            justify: "flex-end"
+            justify: "flex-end",
+            onKeyDown: handleEnter(approveButton.click)
         });
 
     approveButton.useClick(click => click.handle(() => {

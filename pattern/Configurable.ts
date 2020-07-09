@@ -57,7 +57,7 @@ export class Configurable<P = {}> {
         return this;
     };
 
-    protected property = <T>(value?: T) => property(value).consume(this.notifyTrigger).cleared(this.notifyTrigger);
+    protected property = <T>(value?: T) => property<T>(value).consume(this.notifyTrigger).cleared(this.notifyTrigger);
 
     protected hookValue = this.hooks.hookValue;
 

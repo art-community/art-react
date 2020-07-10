@@ -11,6 +11,7 @@ export enum CodeEditorTheme {
 
 export const BLANK = '_blank';
 export const SELF = '_self';
+export const SPACE = ' ';
 
 export const DEFAULT_SELECTOR_WIDTH = 200;
 export const DEFAULT_DIALOG_TRANSITION_TIMEOUT = 0;

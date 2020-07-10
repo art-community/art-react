@@ -75,7 +75,13 @@ export class ManagedButton extends Widget<ManagedButton, Properties, Configurati
                         onClick: this.configuration.click.execute
                     }
                 }>
-                {isWidget(this.properties.icon) ? this.properties.icon.render() : this.properties.icon.widget.render()}
+                {isWidget(this.properties.icon)
+                    ? this.properties.icon.render(this.configuration.color.value
+                        ? {color: this.configuration.disabled.value ? "disabled" : this.configuration.color.value}
+                        : undefined)
+                    : this.properties.icon.widget.render(this.configuration.color.value
+                        ? {color: this.configuration.disabled.value ? "disabled" : this.configuration.color.value}
+                        : undefined)}
             </IconButton>
         }
 

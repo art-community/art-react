@@ -47,6 +47,7 @@ type Properties<T extends any> = Omit<Omit<AutocompleteProps<any, any, any, any>
     disabled?: boolean
     label?: string | LabelProperties
     selected?: T[]
+    comparator?: (current: T, other: T) => boolean
 }
 
 const useStyle = (minWidth: number | string, disabled?: boolean) => {
@@ -100,8 +101,10 @@ class Configuration<T extends any> extends Configurable<Properties<T>> {
     constructor(widget: Widget<any>, properties: Properties<T>) {
         super(widget, properties);
 
+        const comparator = properties.comparator || equal;
+
         const indexes = properties.selected?.map(value => properties.available
-            ?.findIndex(item => equal(item, value)))
+            ?.findIndex(item => comparator(item, value)))
             ?.filter(index => index != undefined && index != -1)
             ?.map(index => index!)
             || [] as number[];
@@ -114,7 +117,7 @@ class Configuration<T extends any> extends Configurable<Properties<T>> {
             const indexes: number[] = [];
             for (let index = 0; index < this.#availableItems.length; index++) {
                 const item = this.#availableItems[index];
-                if (values.some(value => equal(item.value, value))) {
+                if (values.some(value => comparator(item.value, value))) {
                     indexes.push(index);
                 }
             }
@@ -142,6 +145,7 @@ class Configuration<T extends any> extends Configurable<Properties<T>> {
     selectItems = (suggestions: string[]) => this.selectedIndexes.value = suggestions.map(this.findItemIndex).filter(index => index != -1)
 
     setAvailableValues = (values: T[]) => {
+        const comparator = this.defaultProperties.comparator || equal;
         const selectedValues = [...this.selected.value];
 
         this.#availableItems = values
@@ -149,7 +153,7 @@ class Configuration<T extends any> extends Configurable<Properties<T>> {
 
         this.pauseRender();
         this.selectedIndexes.value = selectedValues
-        .map(value => this.#availableItems.findIndex(item => equal(item.value, value)))
+        .map(value => this.#availableItems.findIndex(item => comparator(item.value, value)))
         .filter(index => index != -1)
         this.continueRender();
     };

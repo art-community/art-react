@@ -34,7 +34,7 @@ export class Property<T> {
             this.#afterUpdateConsumers.forEach(action => action(value));
             return
         }
-        if (equal(this.#value, value)) {
+        if (Object.is(this.#value, value)) {
             this.#value = value;
             this.#pending = value;
             return;

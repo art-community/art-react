@@ -1,4 +1,4 @@
-import {Checkbox, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelProps, ExpansionPanelSummary, Grid, Radio, Typography} from "@material-ui/core";
+import {Checkbox, Accordion, AccordionDetails, AccordionProps, AccordionSummary, Grid, Radio, Typography} from "@material-ui/core";
 import React, {Dispatch, DispatchWithoutAction, useRef} from "react";
 import {Widget} from "../../widgets/Widget";
 import {observe} from "../../pattern/Observable";
@@ -9,7 +9,7 @@ import {Property} from "../../pattern/Property";
 import {bigLoader} from "../simple/SimpleLoader";
 import {DEFAULT_PANEL_TRANSITION_TIMEOUT, fromCheckEvent} from "../../constants/Constants";
 
-type Properties = Omit<ExpansionPanelProps, "children"> & {
+type Properties = Omit<AccordionProps, "children"> & {
     label?: string
     labelColor?: "primary" | "secondary"
     wrapLabel?: boolean
@@ -168,7 +168,7 @@ export class ManagedPanel<T extends Widget<any>> extends Widget<ManagedPanel<T>,
         delete baseProperties.expanded;
 
         if (this.properties.radio || this.properties.checkbox) {
-            return <ExpansionPanel
+            return <Accordion
                 {
                     ...{
                         ...baseProperties,
@@ -180,23 +180,23 @@ export class ManagedPanel<T extends Widget<any>> extends Widget<ManagedPanel<T>,
                         expanded: expanded
                     }
                 }>
-                <ExpansionPanelSummary onClick={this.configuration.click.execute} expandIcon={<ExpandMore/>}>
+                <AccordionSummary onClick={this.configuration.click.execute} expandIcon={<ExpandMore/>}>
                     <Grid container alignItems={"center"} wrap={"nowrap"} spacing={1}>
                         {leftIcon}
                         {this.properties.radio ? radio : checkbox}
                         {label}
                         {rightIcon}
                     </Grid>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Grid item xs>
                         {details}
                     </Grid>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+                </AccordionDetails>
+            </Accordion>
         }
 
-        return <ExpansionPanel
+        return <Accordion
             {
                 ...{
                     ...baseProperties,
@@ -213,19 +213,19 @@ export class ManagedPanel<T extends Widget<any>> extends Widget<ManagedPanel<T>,
                     onMouseLeave: () => this.properties.reactOnCursor && this.collapse()
                 }
             }>
-            <ExpansionPanelSummary onClick={this.configuration.click.execute} expandIcon={<ExpandMore/>}>
+            <AccordionSummary onClick={this.configuration.click.execute} expandIcon={<ExpandMore/>}>
                 <Grid container alignItems={"center"} wrap={"nowrap"} justify={"flex-end"}>
                     {leftIcon}
                     {label}
                     {rightIcon}
                 </Grid>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
                 <Grid item xs>
                     {details}
                 </Grid>
-            </ExpansionPanelDetails>
-        </ExpansionPanel>;
+            </AccordionDetails>
+        </Accordion>;
     };
 }
 

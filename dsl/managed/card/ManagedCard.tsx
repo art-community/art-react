@@ -1,4 +1,4 @@
-import {Card, CardContent, CardHeader, CardProps, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, Typography} from "@material-ui/core";
+import {Card, CardContent, CardHeader, CardProps, Accordion, AccordionDetails, AccordionSummary, Grid, Typography} from "@material-ui/core";
 import React, {Dispatch} from "react";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import {Widget} from "../../../widgets/Widget";
@@ -132,7 +132,7 @@ export class ManagedCard extends Widget<ManagedCard, Properties, Configuration> 
             </Grid>;
 
         const panel =
-            <ExpansionPanel
+            <Accordion
                 TransitionProps={{
                     unmountOnExit: !this.properties.persistent,
                     mountOnEnter: this.properties.lazy,
@@ -140,15 +140,15 @@ export class ManagedCard extends Widget<ManagedCard, Properties, Configuration> 
                 }}
                 onChange={fromCheckEvent(this.configuration.expanded.set)}
                 expanded={Boolean(expanded)}>
-                <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
+                <AccordionSummary expandIcon={<ExpandMore/>}>
                     <Typography color={"primary"} noWrap>Подробности</Typography>
-                </ExpansionPanelSummary>
+                </AccordionSummary>
                 <CardContent>
-                    <ExpansionPanelDetails>
+                    <AccordionDetails>
                         {attributes}
-                    </ExpansionPanelDetails>
+                    </AccordionDetails>
                 </CardContent>
-            </ExpansionPanel>;
+            </Accordion>;
 
         const baseProperties = {...this.properties};
         delete baseProperties.lazy;

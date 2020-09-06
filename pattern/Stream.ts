@@ -1,6 +1,5 @@
 import {Dispatch, DispatchWithoutAction} from "react";
 import {ADD_EVENT, DELETE_EVENT, UPDATE_EVENT} from "../../constants/EventTypes";
-import {asynchronous} from "../extensions/extensions";
 import {doNothing} from "../constants/Constants";
 
 export type StreamEvent<T> = {
@@ -62,7 +61,7 @@ export class Stream<T> {
         }
     };
 
-    produceEvent = (event: StreamEvent<T>) => asynchronous(() => {
+    produceEvent = (event: StreamEvent<T>) => {
         switch (event.type) {
             case ADD_EVENT:
                 this.#addSubscribers.forEach(notify => notify(event.data));
@@ -78,7 +77,7 @@ export class Stream<T> {
                 this.#deleteSubscribers.forEach(notify => notify(event.data));
                 return;
         }
-    });
+    };
 }
 
 export const stream = <T>(stopAction: DispatchWithoutAction) => new Stream<T>().start(stopAction);

@@ -147,6 +147,11 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
         return widget;
     }
 
+    useKey = (key: Key) => {
+        this.#usedKey = key;
+        return this;
+    }
+
     render = (properties?: object) => {
         this.properties = {...this.properties, ...properties}
         return <WidgetRender configuration={this.configuration as Configurable}

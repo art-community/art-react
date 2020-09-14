@@ -30,6 +30,8 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
 
     #usedKey?: Key;
 
+    #style?: any;
+
     readonly id = random();
 
     readonly key = () => this.#usedKey == undefined ? this.id as Key : this.#usedKey;
@@ -147,6 +149,11 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
         return widget;
     }
 
+    styled = (style: any) => {
+        this.#style = style;
+        return this;
+    }
+
     useKey = (key: Key) => {
         this.#usedKey = key;
         return this;
@@ -154,56 +161,57 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
 
     render = (properties?: object) => {
         this.properties = {...this.properties, ...properties}
-        return <WidgetRender configuration={this.configuration as Configurable}
-                             managed={this.#managed()}
-                             key={this.key()}
-                             widget={this as Widget<any>}
-                             hooks={this.hooks}
-                             subscriptions={this.subscriptions}
-                             renderWithoutChanges={this.renderWithoutChanges}
-                             addons={this.#addons}
+        const widgetRender = <WidgetRender configuration={this.configuration as Configurable}
+                                           managed={this.#managed()}
+                                           key={this.key()}
+                                           widget={this as Widget<any>}
+                                           hooks={this.hooks}
+                                           subscriptions={this.subscriptions}
+                                           renderWithoutChanges={this.renderWithoutChanges}
+                                           addons={this.#addons}
 
-                             onLoad={() => {
-                                 this.lifeCycle.onLoad.forEach(action => action(this as Widget<any>))
-                             }}
+                                           onLoad={() => {
+                                               this.lifeCycle.onLoad.forEach(action => action(this as Widget<any>))
+                                           }}
 
-                             onMount={() => {
-                                 this.lifeCycle.onMount.forEach(action => action(this as Widget<any>));
-                                 const lastState = this.state;
-                                 this.state = WidgetState.MOUNTED;
-                                 if (lifecycleLogsEnabled()) {
-                                     console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
-                                 }
-                             }}
+                                           onMount={() => {
+                                               this.lifeCycle.onMount.forEach(action => action(this as Widget<any>));
+                                               const lastState = this.state;
+                                               this.state = WidgetState.MOUNTED;
+                                               if (lifecycleLogsEnabled()) {
+                                                   console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
+                                               }
+                                           }}
 
-                             onUnmount={() => {
-                                 this.lifeCycle.onUnmount.forEach(action => action(this as Widget<any>));
-                                 const lastState = this.state;
-                                 this.state = WidgetState.UNMOUNTED;
-                                 if (lifecycleLogsEnabled()) {
-                                     console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
-                                 }
-                             }}
+                                           onUnmount={() => {
+                                               this.lifeCycle.onUnmount.forEach(action => action(this as Widget<any>));
+                                               const lastState = this.state;
+                                               this.state = WidgetState.UNMOUNTED;
+                                               if (lifecycleLogsEnabled()) {
+                                                   console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
+                                               }
+                                           }}
 
-                             onRender={() => {
-                                 this.lifeCycle.onRender.forEach(action => action(this as Widget<any>));
-                                 const lastState = this.state;
-                                 this.state = WidgetState.RENDERED;
-                                 if (lifecycleLogsEnabled()) {
-                                     console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
-                                 }
-                             }}
+                                           onRender={() => {
+                                               this.lifeCycle.onRender.forEach(action => action(this as Widget<any>));
+                                               const lastState = this.state;
+                                               this.state = WidgetState.RENDERED;
+                                               if (lifecycleLogsEnabled()) {
+                                                   console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
+                                               }
+                                           }}
 
-                             draw={() => {
-                                 this.lifeCycle.onDraw.forEach(action => action(this as Widget<any>));
-                                 const lastState = this.state;
-                                 this.state = WidgetState.DRAW;
-                                 if (lifecycleLogsEnabled()) {
-                                     console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
-                                 }
-                                 return <Render factory={() => this.draw()} key={this.key()}/>;
-                             }}
+                                           draw={() => {
+                                               this.lifeCycle.onDraw.forEach(action => action(this as Widget<any>));
+                                               const lastState = this.state;
+                                               this.state = WidgetState.DRAW;
+                                               if (lifecycleLogsEnabled()) {
+                                                   console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
+                                               }
+                                               return <Render factory={() => this.draw()} key={this.key()}/>;
+                                           }}
         />;
+        return this.#style ? <div style={this.#style}>{widgetRender}</div> : widgetRender;
     }
 }
 

@@ -32,6 +32,7 @@ export class Configurable<P = {}> {
             return this;
         }
         this.#trigger.dispose();
+        this.#trigger = undefined;
         return this;
     };
 

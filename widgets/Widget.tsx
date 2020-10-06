@@ -187,6 +187,7 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
                                                this.lifeCycle.onUnmount.forEach(action => action(this as Widget<any>));
                                                const lastState = this.state;
                                                this.state = WidgetState.UNMOUNTED;
+                                               this.configuration.disposeTrigger();
                                                if (lifecycleLogsEnabled()) {
                                                    console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
                                                }

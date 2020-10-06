@@ -1,6 +1,6 @@
 import {Configurable} from "../pattern/Configurable";
 import {HookContainer} from "../pattern/HookContainer";
-import React, {DispatchWithoutAction} from "react";
+import React, {DispatchWithoutAction, useCallback} from "react";
 import {subscribe, Subscription} from "../pattern/Subscribe";
 import {onComponentMount, onComponentUnmount} from "../pattern/Lifecycle";
 import {useTriggerState} from "../hooks/Hooks";
@@ -39,12 +39,13 @@ export const WidgetRender = <ConfigurationType extends Configurable<unknown>>(pr
     });
 
     const trigger = useTriggerState(properties.configuration);
+    const draw = properties.renderWithoutChanges ? properties.draw : useCallback(properties.draw, [trigger]);
 
     if (!properties.managed) {
-        return <>{properties.draw()}{properties.addons.map(addon => addon.render())}</>;
+        return <>{draw()}{properties.addons.map(addon => addon.render())}</>;
     }
 
     return properties.renderWithoutChanges
-        ? <>{properties.draw()}{properties.addons.map(addon => addon.render())}</>
-        : observe(trigger).render(() => <>{properties.draw()}{properties.addons.map(addon => addon.render())}</>);
+        ? <>{draw()}{properties.addons.map(addon => addon.render())}</>
+        : observe(trigger).render(() => <>{draw()}{properties.addons.map(addon => addon.render())}</>);
 };

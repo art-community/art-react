@@ -4,8 +4,8 @@ export const hooksEnabled = () => {
     try {
         useRef();
         return true
-    } catch (e) {
-        console.warn("Hooks disabled\n", e);
+    } catch (exception) {
+        console.warn("Hooks disabled\n", exception);
         return false
     }
 };

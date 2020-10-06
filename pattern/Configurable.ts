@@ -19,13 +19,8 @@ export class Configurable<P = {}> {
         this.defaultProperties = properties || {} as P;
     }
 
-    get trigger() {
-        return this.#trigger;
-    }
-
     bindTrigger = (trigger: Trigger) => {
         if (this.#trigger) {
-            this.#trigger.connect(trigger);
             return this;
         }
         this.#trigger = trigger;

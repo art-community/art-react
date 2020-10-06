@@ -12,7 +12,7 @@ export const useTriggerState = (configurable: Configurable<unknown>) => {
     if (trigger.current) {
         return state;
     }
-    trigger.current = new Trigger(setState);
+    trigger.current = new Trigger(setState, () => trigger.current = undefined);
     configurable.bindTrigger(trigger.current);
     return state;
 };

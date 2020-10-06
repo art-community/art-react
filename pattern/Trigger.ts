@@ -1,15 +1,24 @@
-import {Dispatch} from "react";
+import {Dispatch, DispatchWithoutAction} from "react";
 import {doNothing} from "../constants/Constants";
 
 export class Trigger {
-    #listener: Dispatch<number>;
+    #notifyListener: Dispatch<number>;
+    #disposeListener: DispatchWithoutAction;
 
-    constructor(listener: Dispatch<number>) {
-        this.#listener = listener;
+    constructor(notifyListener: Dispatch<number>, disposeListener: DispatchWithoutAction) {
+        this.#notifyListener = notifyListener;
+        this.#disposeListener = disposeListener;
+    }
+
+    dispose = () => {
+        this.#notifyListener = doNothing;
+        this.#disposeListener();
+        this.#disposeListener = doNothing;
+        return this;
     }
 
     notify = () => {
-        this.#listener(Math.random());
+        this.#notifyListener(Math.random());
         return this;
     };
 }

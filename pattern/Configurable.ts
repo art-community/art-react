@@ -27,6 +27,14 @@ export class Configurable<P = {}> {
         return this;
     };
 
+    disposeTrigger = () => {
+        if (!this.#trigger) {
+            return this;
+        }
+        this.#trigger.dispose();
+        return this;
+    };
+
     notifyTrigger = () => {
         if (this.#widget.state == WidgetState.UNMOUNTED || this.#renderPaused) {
             return this;

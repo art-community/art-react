@@ -1,5 +1,6 @@
 import {Dispatch, DispatchWithoutAction} from "react";
 import {doNothing} from "../constants/Constants";
+import {random} from "../extensions/extensions";
 
 export class Trigger {
     #notifyListener: Dispatch<number>;
@@ -18,7 +19,7 @@ export class Trigger {
     }
 
     notify = () => {
-        this.#notifyListener(Math.random());
+        this.#notifyListener(random());
         return this;
     };
 }

@@ -4,6 +4,9 @@ import {MAIN_COMPONENT} from "./constants/Constants";
 import {horizontalGrid} from "./dsl/managed/ManagedGrid";
 import {label} from "./dsl/managed/ManagedLabel";
 import {information} from "./dsl/managed/ManagedDialog";
+import {text} from "./dsl/managed/ManagedTextField";
+import {checkBoxPanel} from "./dsl/managed/ManagedPanel";
+import {tooltip} from "./dsl/simple/SimpleTooltip";
 
 window.addEventListener("beforeunload", event => {
     event.preventDefault();
@@ -17,5 +20,9 @@ const widget = horizontalGrid({alignItems: "center", spacing: 2})
             variant: "contained"
         }).onClick(() => informationDialog.useVisible(visible => visible.set(!visible.value)))
     )
-    .add(informationDialog);
+    .pushWidget(checkBoxPanel(tooltip().widget(text({label: "MyText"}).onTextChanged(console.log)).title(label("Test")), {
+        label: "Test"
+    })
+    .add(informationDialog))
+;
 ReactDOM.render(widget.render(), document.getElementById(MAIN_COMPONENT));

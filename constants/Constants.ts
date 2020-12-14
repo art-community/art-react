@@ -1,5 +1,5 @@
 import React, {ChangeEvent, DispatchWithoutAction, KeyboardEvent} from "react";
-import {asynchronous} from "../extensions/extensions";
+import {asynchronous, random} from "../extensions/extensions";
 
 export const UTF_8 = "utf-8"
 
@@ -40,7 +40,7 @@ export const ignore = (_?: unknown) => () => doNothing;
 
 export const identity = <T>(value: T) => value;
 
-export const randomColor = () => `#${((1 << 24) * Math.random() | 0).toString(16)}`;
+export const randomColor = () => `#${((1 << 24) * random() | 0).toString(16)}`;
 
 export const lifecycleLogsEnabled = () => false;
 

@@ -41,7 +41,7 @@ let widget2 = horizontalGrid({spacing: 1}).breakpoints({xs: true})
     .pushWidget(text({label: "Имя", fullWidth: true}))
     .pushWidget(text({label: "Фамилия", fullWidth: true}));
 
-let widget3 = text({label: "Дата рождения", fullWidth: true, defaultErrorText: "Формат должен быть dd/MM/YYYY"});
+let widget3 = text({label: "Дата рождения", fullWidth: true});
 
 let widget4 = button({label: "Сохранить", variant: "contained", fullWidth: true}).onClick(managedDialog().open);
 

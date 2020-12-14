@@ -88,14 +88,14 @@ export class ManagedTextField extends Widget<ManagedTextField, Properties, Confi
 
     setMask = (value: RegExp) => this.useMask(mask => mask.value = value);
 
-    mask = () => this.configuration.mask;
+    mask = () => this.configuration.mask.value;
 
 
     useRegExp = this.extract(configuration => configuration.regexp);
 
     setRegExp = (value: RegExp) => this.useRegExp(regexp => regexp.value = value);
 
-    regExp = () => this.configuration.regexp;
+    regExp = () => this.configuration.regexp.value;
 
 
     useError = this.extract(configuration => configuration.error);

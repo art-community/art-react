@@ -1,5 +1,5 @@
 import {Widget} from "../../widgets/Widget";
-import {createStyles, Grid, Tooltip, TooltipProps} from "@material-ui/core";
+import {createStyles, Tooltip, TooltipProps} from "@material-ui/core";
 import React from "react";
 import {makeStyles} from "@material-ui/styles";
 import {empty} from "./SimpleEmptyComponent";
@@ -30,23 +30,19 @@ export class SimpleTooltip extends Widget<SimpleTooltip, Properties> {
 
     draw = () => {
         const style = useTooltipStyle();
-        return <Grid container> {/*I don't known why, but without it tooltip bugged...*/}
-            <Tooltip
-                {
-                    ...{
-                        ...this.properties,
-                        TransitionProps: {
-                            timeout: DEFAULT_TOOLTIP_TRANSITION_TIMEOUT
-                        },
-                        title: this.#title.render(),
-                        classes: {tooltip: style.noMaxWidth}
-                    }
-                }>
-                <span>
-                    {this.#widget.render()}
-                </span>
-            </Tooltip>
-        </Grid>;
+        return <Tooltip
+            {
+                ...{
+                    ...this.properties,
+                    TransitionProps: {
+                        timeout: DEFAULT_TOOLTIP_TRANSITION_TIMEOUT
+                    },
+                    title: this.#title.render(),
+                    classes: {tooltip: style.noMaxWidth}
+                }
+            }>
+            <div>{this.#widget.render()}</div>
+        </Tooltip>;
     };
 }
 

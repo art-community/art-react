@@ -94,7 +94,7 @@ export const fromSliderEvent = (action: ((value: unknown) => unknown) | undefine
         : undefined;
 
 
-export const handleEnter = (action: DispatchWithoutAction) => (event: KeyboardEvent<unknown>) => {
+export const handleEnter = (action: DispatchWithoutAction) => (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key == "Enter") {
         asynchronous(action, ENTER_DEBOUNCE_TIMEOUT);
     }

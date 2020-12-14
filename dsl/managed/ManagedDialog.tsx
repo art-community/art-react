@@ -19,8 +19,8 @@ type Properties = Omit<DialogProps, "open"> & {
     static?: boolean
 }
 
-type NotificationProperties = Properties & {
-    notification: string
+type InformationProperties = Properties & {
+    information: string
     label: string
     buttonLabel: string
 }
@@ -132,7 +132,7 @@ export class ManagedDialog extends Widget<ManagedDialog, Properties, Configurati
 
 export const dialog = (properties?: Properties) => new ManagedDialog(properties, Configuration);
 
-export const information = (properties: NotificationProperties) => {
+export const information = (properties: InformationProperties) => {
     const okButton = button({
         label: properties.buttonLabel,
         fullWidth: true,
@@ -146,7 +146,7 @@ export const information = (properties: NotificationProperties) => {
         variant: "h6",
         align: "center",
         color: "secondary",
-        text: properties.notification
+        text: properties.information
     }))
     .action(okButton);
     okButton.useClick(click => click.handle(informationDialog.close));

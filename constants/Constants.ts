@@ -1,5 +1,4 @@
 import React, {ChangeEvent, DispatchWithoutAction, KeyboardEvent} from "react";
-import * as monacoEditor from "monaco-editor";
 import {asynchronous} from "../extensions/extensions";
 
 export const UTF_8 = "utf-8"
@@ -8,6 +7,8 @@ export enum CodeEditorTheme {
     DARK = 'dark',
     LIGHT = 'light'
 }
+
+export const MAIN_COMPONENT = "MainComponent";
 
 export const BLANK = '_blank';
 export const SELF = '_self';
@@ -84,14 +85,6 @@ export const fromSearcherEvent = (action: ((value: unknown) => unknown) | undefi
             action?.(value);
         }
         : undefined;
-
-export const fromEditorEvent = (action: ((value: unknown) => unknown) | undefined) =>
-    action
-        ? (event: monacoEditor.editor.IModelContentChangedEvent, value: string | undefined) => {
-            action?.(value);
-        }
-        : undefined;
-
 
 export const fromSliderEvent = (action: ((value: unknown) => unknown) | undefined) =>
     action

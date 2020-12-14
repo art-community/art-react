@@ -144,19 +144,19 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
         return this as unknown as ComponentType;
     }
 
-    add = <T extends Widget<any>>(widget: T): T => {
+    add = <T extends Widget<any>>(widget: T) => {
         this.#addons.push(widget)
-        return widget;
+        return this as unknown as ComponentType;
     }
 
     styled = (style: any) => {
         this.#style = style;
-        return this;
+        return this as unknown as ComponentType;
     }
 
     useKey = (key: Key) => {
         this.#usedKey = key;
-        return this;
+        return this as unknown as ComponentType;
     }
 
     render = (properties?: object) => {

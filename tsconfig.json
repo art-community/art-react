@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "declaration": false,
+    "importHelpers": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "noEmit": true,
+    "module": "esnext",
+    "strict": true,
+    "esModuleInterop": true,
+    "traceResolutions": true,
+    "jsx": "react",
+    "lib": [
+      "es2019.array",
+      "es6",
+      "dom"
+    ],
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "sourceMap": false,
+    "strictFunctionTypes": false,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "webpack",
+    "jest"
+  ],
+  "parcel-plugin-typescript": {
+    "transpileOnly": false
+  }
+}

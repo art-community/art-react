@@ -1,6 +1,9 @@
 import {Dispatch, DispatchWithoutAction} from "react";
-import {ADD_EVENT, DELETE_EVENT, UPDATE_EVENT} from "../../constants/EventTypes";
 import {doNothing} from "../constants/Constants";
+
+export const ADD_EVENT = "added";
+export const UPDATE_EVENT = "updated";
+export const DELETE_EVENT = "deleted";
 
 export type StreamEvent<T> = {
     type: string

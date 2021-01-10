@@ -7,7 +7,7 @@ import {ConfigurationToSubject, ConstructorType, SubjectUser} from "../types/Typ
 import {synchronize, Synchronizer} from "../pattern/Synchronizer";
 import {Render} from "../pattern/Render";
 import {Configurable} from "../pattern/Configurable";
-import {WidgetRender} from "../renderer/WidgetRenderer";
+import {WidgetRenderer} from "../renderer/WidgetRenderer";
 import {lazy} from "../pattern/Lazy";
 import {lifecycleLogsEnabled} from "../constants/Constants";
 
@@ -161,20 +161,20 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
 
     render = (properties?: object) => {
         this.properties = {...this.properties, ...properties}
-        const widgetRender = <WidgetRender configuration={this.configuration as Configurable}
-                                           managed={this.#managed()}
-                                           key={this.key()}
-                                           widget={this as Widget<any>}
-                                           hooks={this.hooks}
-                                           subscriptions={this.subscriptions}
-                                           renderWithoutChanges={this.renderWithoutChanges}
-                                           addons={this.#addons}
+        const widgetRender = <WidgetRenderer configuration={this.configuration as Configurable}
+                                             managed={this.#managed()}
+                                             key={this.key()}
+                                             widget={this as Widget<any>}
+                                             hooks={this.hooks}
+                                             subscriptions={this.subscriptions}
+                                             renderWithoutChanges={this.renderWithoutChanges}
+                                             addons={this.#addons}
 
-                                           onLoad={() => {
+                                             onLoad={() => {
                                                this.lifeCycle.onLoad.forEach(action => action(this as Widget<any>))
                                            }}
 
-                                           onMount={() => {
+                                             onMount={() => {
                                                this.lifeCycle.onMount.forEach(action => action(this as Widget<any>));
                                                const lastState = this.state;
                                                this.state = WidgetState.MOUNTED;
@@ -183,7 +183,7 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
                                                }
                                            }}
 
-                                           onUnmount={() => {
+                                             onUnmount={() => {
                                                this.lifeCycle.onUnmount.forEach(action => action(this as Widget<any>));
                                                const lastState = this.state;
                                                this.state = WidgetState.UNMOUNTED;
@@ -193,7 +193,7 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
                                                }
                                            }}
 
-                                           onRender={() => {
+                                             onRender={() => {
                                                this.lifeCycle.onRender.forEach(action => action(this as Widget<any>));
                                                const lastState = this.state;
                                                this.state = WidgetState.RENDERED;
@@ -202,7 +202,7 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
                                                }
                                            }}
 
-                                           draw={() => {
+                                             draw={() => {
                                                this.lifeCycle.onDraw.forEach(action => action(this as Widget<any>));
                                                const lastState = this.state;
                                                this.state = WidgetState.DRAW;

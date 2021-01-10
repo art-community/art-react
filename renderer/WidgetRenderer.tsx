@@ -22,7 +22,7 @@ type RenderProperties<ConfigurationType extends Configurable<unknown>> = {
     managed: boolean
 };
 
-export const WidgetRender = <ConfigurationType extends Configurable<unknown>>(properties: RenderProperties<ConfigurationType>) => {
+export const WidgetRenderer = <ConfigurationType extends Configurable<unknown>>(properties: RenderProperties<ConfigurationType>) => {
     properties.hooks.evaluate();
 
     if (properties.widget.state == WidgetState.CREATED) {

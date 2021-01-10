@@ -45,7 +45,9 @@ export const WidgetRenderer = <ConfigurationType extends Configurable<unknown>>(
         return <>{draw()}{properties.addons.map(addon => addon.render())}</>;
     }
 
-    return properties.renderWithoutChanges
-        ? <>{draw()}{properties.addons.map(addon => addon.render())}</>
-        : observe(trigger).render(() => <>{draw()}{properties.addons.map(addon => addon.render())}</>);
+    if (properties.renderWithoutChanges) {
+        return <>{draw()}{properties.addons.map(addon => addon.render())}</>;
+    }
+
+    return observe(trigger).render(() => <>{draw()}{properties.addons.map(addon => addon.render())}</>);
 };

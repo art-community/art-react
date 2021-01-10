@@ -8,7 +8,7 @@ import {cardAttribute, CardAttributeProperties} from "./CardAttribute";
 import {CardMenu, cardMenu} from "./CardMenu";
 import {isNotEmptyArray} from "../../../extensions/extensions";
 import {DEFAULT_PANEL_TRANSITION_TIMEOUT, fromCheckEvent} from "../../../constants/Constants";
-import {Render} from "../../../pattern/Render";
+import {Renderer} from "../../../pattern/Renderer";
 
 type Properties = Omit<CardProps, "children"> & {
     label?: string
@@ -120,7 +120,7 @@ export class ManagedCard extends Widget<ManagedCard, Properties, Configuration> 
                         {
                             this.configuration.attributes.value!.map((attribute, index) =>
                                 <Grid key={index} item>
-                                    {<Render factory={cardAttribute(attribute).render}/>}
+                                    {<Renderer factory={cardAttribute(attribute).render}/>}
                                 </Grid>
                             )
                         }
@@ -160,8 +160,8 @@ export class ManagedCard extends Widget<ManagedCard, Properties, Configuration> 
 
         return <Card {...baseProperties}>
             <CardHeader
-                avatar={<Render factory={this.#avatar.render}/>}
-                action={<Render factory={this.#menu.render}/>}
+                avatar={<Renderer factory={this.#avatar.render}/>}
+                action={<Renderer factory={this.#menu.render}/>}
                 title={<Typography color={"primary"} variant={"h6"}>{this.configuration.label.value}</Typography>}/>
             {isNotEmptyArray(this.configuration.attributes.value) && this.properties.panel ? panel : <CardContent>{attributes}</CardContent>}
         </Card>

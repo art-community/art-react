@@ -11,7 +11,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import {checkbox} from "./ManagedCheckbox";
 import {chip} from "../simple/SimpleChip";
 import {label} from "./ManagedLabel";
-import {Render} from "../../pattern/Render";
+import {Renderer} from "../../pattern/Renderer";
 import equal from "fast-deep-equal";
 import {DEFAULT_SELECTOR_WIDTH, fromSearcherEvent} from "../../constants/Constants";
 import {isEmptyArray} from "../../extensions/extensions";
@@ -288,10 +288,10 @@ export class ManagedSearcher<T extends any> extends Widget<ManagedSearcher<T>, P
             }/>
     };
 
-    #renderOption = (option: string) => <Render key={option} factory={() => this.configuration.findItem(option)!.option.render()}/>;
+    #renderOption = (option: string) => <Renderer key={option} factory={() => this.configuration.findItem(option)!.option.render()}/>;
 
     #renderTags = (getTagProperties: AutocompleteGetTagProps, options: string[], style: CSSProperties) => options.map((option, index) =>
-        <Render key={option} factory={() => this.configuration.findItem(option)!.tag.render({...getTagProperties({index}), style})}/>
+        <Renderer key={option} factory={() => this.configuration.findItem(option)!.tag.render({...getTagProperties({index}), style})}/>
     );
 
     #renderInput = (params: AutocompleteRenderInputParams) =>

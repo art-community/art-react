@@ -10,7 +10,7 @@ import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
 import equal from "fast-deep-equal";
 import {immutable} from "../../pattern/Immutable";
 import {conditional} from "../../pattern/Conditional";
-import {Render} from "../../pattern/Render";
+import {Renderer} from "../../pattern/Renderer";
 import {Breakpoint} from "@material-ui/core/styles/createBreakpoints";
 import {GridSize} from "@material-ui/core/Grid/Grid";
 import {defer} from "../../pattern/Deferred";
@@ -373,7 +373,7 @@ export class ManagedCollection<T extends Widget<any>> extends Widget<ManagedColl
             <Grid item container spacing={1} direction={this.properties.direction}>
                 {this.configuration
                     .items
-                    .value!.map(item => <Render key={item.id} factory={() => this.#renderItem(item as CollectionItem<T>, style)}/>)}
+                    .value!.map(item => <Renderer key={item.id} factory={() => this.#renderItem(item as CollectionItem<T>, style)}/>)}
             </Grid>;
 
         return <Grid container spacing={1} direction={"column"}>

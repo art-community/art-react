@@ -5,4 +5,4 @@ type Properties = {
     factory: () => JSX.Element,
 };
 
-export const Render = (properties: Properties) => <>{properties.factory()}</>;
+export const Renderer = (properties: Properties) => <>{properties.factory()}</>;

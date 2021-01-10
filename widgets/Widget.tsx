@@ -5,7 +5,7 @@ import {Subscription} from "../pattern/Subscribe";
 import {LifeCycle, LifeCycleAction} from "../pattern/Lifecycle";
 import {ConfigurationToSubject, ConstructorType, SubjectUser} from "../types/Types";
 import {synchronize, Synchronizer} from "../pattern/Synchronizer";
-import {Render} from "../pattern/Render";
+import {Renderer} from "../pattern/Renderer";
 import {Configurable} from "../pattern/Configurable";
 import {WidgetRenderer} from "../renderer/WidgetRenderer";
 import {lazy} from "../pattern/Lazy";
@@ -209,7 +209,7 @@ export abstract class Widget<ComponentType extends Widget<ComponentType>, Proper
                                                if (lifecycleLogsEnabled()) {
                                                    console.log(`[${this.widgetName}]: ${lastState} -> ${this.state}`);
                                                }
-                                               return <Render factory={() => this.draw()} key={this.key()}/>;
+                                               return <Renderer factory={() => this.draw()} key={this.key()}/>;
                                            }}
         />;
         return this.#style ? <div style={this.#style}>{widgetRender}</div> : widgetRender;

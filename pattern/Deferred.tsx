@@ -1,4 +1,4 @@
-import {Render} from "./Render";
+import {Renderer} from "./Renderer";
 import React, {useMemo} from "react";
 
 export class Deferred {
@@ -16,5 +16,5 @@ export class Deferred {
 
 export const defer = (...values: any[]) => {
     const key = Math.random();
-    return new Deferred(values, (observable, renderer): any => <Render key={key} factory={() => useMemo(renderer, values)}/>);
+    return new Deferred(values, (observable, renderer): any => <Renderer key={key} factory={() => useMemo(renderer, values)}/>);
 };

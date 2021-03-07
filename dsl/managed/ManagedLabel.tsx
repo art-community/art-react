@@ -4,7 +4,7 @@ import {Configurable} from "../../pattern/Configurable";
 import {Widget} from "../../widgets/Widget";
 
 type Properties = TypographyProps & {
-    text: string
+    text?: string
 }
 
 class Configuration extends Configurable<Properties> {
@@ -21,6 +21,6 @@ export class ManagedLabel extends Widget<ManagedLabel, Properties, Configuration
     draw = () => <Typography {...this.properties}>{this.configuration.text.value}</Typography>;
 }
 
-export const label = (properties: Properties | string) => typeof properties == "string"
+export const label = (properties?: Properties | string) => typeof properties == "string"
     ? new ManagedLabel({text: properties}, Configuration)
     : new ManagedLabel(properties, Configuration);

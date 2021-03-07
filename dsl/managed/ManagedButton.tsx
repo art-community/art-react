@@ -132,9 +132,10 @@ export class ManagedButton extends Widget<ManagedButton, Properties, Configurati
 
     draw = () => {
         const button = this.#renderButton();
-        return this.properties.tooltip
-            ? tooltip({placement: "bottom"}).widget(proxy(button)).title(label({text: this.properties.tooltip})).render()
-            : button;
+        const tooltipButton = () => tooltip({placement: "bottom"})
+        .widget(proxy(button))
+        .title(label(this.properties.tooltip));
+        return this.properties.tooltip ? tooltipButton().render() : button;
     };
 
 }

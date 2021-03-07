@@ -26,8 +26,9 @@ export class Optional<T extends Widget<any>> extends StaticWidget<Optional<T>, P
         this.#conditional
         .cache(() => widgetFactory(this.#spawnProperties), () => this.#spawned)
         .apply((widget: T) => {
-            if ((widget as unknown as Closable).onClose) {
-                (widget as unknown as Closable).onClose(this.destroy)
+            const closable = widget as unknown as Closable;
+            if (closable.onClose) {
+                closable.onClose(this.destroy)
             }
             return widget;
         });
@@ -71,8 +72,9 @@ export class Optional<T extends Widget<any>> extends StaticWidget<Optional<T>, P
 
     persist = (properties?: any) => {
         this.#conditional.persist(() => this.#factory(properties) as T).apply((widget: T) => {
-            if ((widget as unknown as Closable).onClose) {
-                (widget as unknown as Closable).onClose(this.destroy)
+            const closable = widget as unknown as Closable;
+            if (closable.onClose) {
+                closable.onClose(this.destroy)
             }
             return widget;
         });

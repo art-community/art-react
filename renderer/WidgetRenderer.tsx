@@ -1,16 +1,17 @@
 import {Configurable} from "../pattern/Configurable";
 import {HookContainer} from "../pattern/HookContainer";
-import React, {DispatchWithoutAction, useCallback} from "react";
+import React, {DispatchWithoutAction, useCallback, useMemo} from "react";
 import {subscribe, Subscription} from "../pattern/Subscribe";
 import {onComponentMount, onComponentUnmount} from "../pattern/Lifecycle";
 import {useTriggerState} from "../hooks/Hooks";
 import {observe} from "../pattern/Observable";
 import {Widget, WidgetState} from "../widgets/Widget";
+import {immutable} from "../pattern/Immutable";
 
 type RenderProperties<ConfigurationType extends Configurable<unknown>> = {
     configuration: ConfigurationType
     draw: () => JSX.Element
-    addons: Widget<any>[]
+    children: Widget<any>[]
     widget: Widget<any>
     hooks: HookContainer
     onMount: DispatchWithoutAction
@@ -39,15 +40,15 @@ export const WidgetRenderer = <ConfigurationType extends Configurable<unknown>>(
     });
 
     const trigger = useTriggerState(properties.configuration);
-    const draw = properties.renderWithoutChanges ? properties.draw : useCallback(properties.draw, [trigger]);
+    const draw = immutable(properties.renderWithoutChanges ? properties.draw : useCallback(properties.draw, [trigger]));
 
     if (!properties.managed) {
-        return <>{draw()}{properties.addons.map(addon => addon.render())}</>;
+        return <>{draw()}{properties.children.map(addon => addon.render())}</>;
     }
 
     if (properties.renderWithoutChanges) {
-        return <>{draw()}{properties.addons.map(addon => addon.render())}</>;
+        return <>{draw()}{properties.children.map(addon => addon.render())}</>;
     }
 
-    return observe(trigger).render(() => <>{draw()}{properties.addons.map(addon => addon.render())}</>);
+    return observe(trigger).render(() => <>{draw()}{properties.children.map(addon => addon.render())}</>);
 };
